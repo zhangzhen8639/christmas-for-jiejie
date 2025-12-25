@@ -40,6 +40,27 @@
         h1 { font-size: 1.8em; }
         p { font-size: 1em; }
     }
+
+    .photo-box {
+        position: absolute;
+        bottom: 12%;
+        width: 100%;
+        text-align: center;
+    }
+
+    .photo-box img {
+        width: 180px;
+        max-width: 70%;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
 </style>
 </head>
 
@@ -48,6 +69,10 @@
 <div class="text">
     <h1>🎄 Merry Christmas 🎄</h1>
     <p>To my dear Jiejie ❤️</p>
+</div>
+
+<div class="photo-box">
+    <img id="photo" src="photo1.jpg">
 </div>
 
 <canvas id="canvas"></canvas>
@@ -130,7 +155,16 @@ function animate() {
 }
 
 animate();
+
+const photos = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
+let idx = 0;
+setInterval(() => {
+    idx = (idx + 1) % photos.length;
+    document.getElementById("photo").src = photos[idx];
+}, 3000);
+
 </script>
 
 </body>
 </html>
+
