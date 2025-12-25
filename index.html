@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎄 Merry Christmas 🎄</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: radial-gradient(circle at top, #0b1d2a, #000);
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    .text {
+        position: absolute;
+        top: 8%;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 0 10px gold;
+    }
+
+    h1 {
+        font-size: 2.4em;
+        margin: 0;
+    }
+
+    p {
+        font-size: 1.2em;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8em; }
+        p { font-size: 1em; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="text">
+    <h1>🎄 Merry Christmas 🎄</h1>
+    <p>To my dear Jiejie ❤️</p>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.onresize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
+
+function drawTree(x, y, len, angle, depth) {
+    if (depth === 0) return;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    const x2 = x + len * Math.cos(angle);
+    const y2 = y - len * Math.sin(angle);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = `rgb(0, ${120 + depth * 10}, 0)`;
+    ctx.lineWidth = depth;
+    ctx.stroke();
+
+    // 彩灯
+    if (depth < 7) {
+        ctx.beginPath();
+        ctx.arc(x2, y2, 4, 0, Math.PI * 2);
+        ctx.fillStyle = ["red", "gold", "cyan", "pink"][Math.floor(Math.random()*4)];
+        ctx.fill();
+    }
+
+    drawTree(x2, y2, len * 0.75, angle + Math.PI / 6, depth - 1);
+    drawTree(x2, y2, len * 0.75, angle - Math.PI / 6, depth - 1);
+}
+
+// 画星星
+function drawStar(cx, cy) {
+    ctx.fillStyle = "gold";
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        let angle = i * 2 * Math.PI / 5 - Math.PI / 2;
+        ctx.lineTo(cx + Math.cos(angle) * 15, cy + Math.sin(angle) * 15);
+        angle += Math.PI / 5;
+        ctx.lineTo(cx + Math.cos(angle) * 6, cy + Math.sin(angle) * 6);
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
+// 雪花
+let snowflakes = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 3 + 1,
+    s: Math.random() + 0.5
+}));
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 雪
+    ctx.fillStyle = "white";
+    snowflakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+        f.y += f.s;
+        if (f.y > canvas.height) f.y = 0;
+    });
+
+    // 树
+    drawTree(canvas.width / 2, canvas.height * 0.85, 90, Math.PI / 2, 9);
+    drawStar(canvas.width / 2, canvas.height * 0.85 - 120);
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
