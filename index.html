@@ -60,25 +60,6 @@
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
     }
-
-    #musicTip {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        color: #fff;
-        background: rgba(0,0,0,0.5);
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 14px;
-        cursor: pointer;
-        animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-    }
-
     
 </style>
 </head>
@@ -182,25 +163,10 @@ setInterval(() => {
     document.getElementById("photo").src = photos[idx];
 }, 3000);
 
-const bgm = document.getElementById("bgm");
-const tip = document.getElementById("musicTip");
-
-function startMusic() {
-    bgm.play().catch(() => {});
-    tip.style.display = "none";
-    document.removeEventListener("click", startMusic);
-}
-
-// 任意点击页面即可触发
-document.addEventListener("click", startMusic);
-
 </script>
-
-<audio id="bgm" src="music.mp3" loop></audio>
-
-<div id="musicTip">🎵 点一下开启音乐</div>
 
 </body>
 </html>
+
 
 
